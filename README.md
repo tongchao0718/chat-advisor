@@ -120,7 +120,7 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ## 👤 作者
 
-**李同超**
+LTC
 
 ## ⚠️ 免责声明
 
