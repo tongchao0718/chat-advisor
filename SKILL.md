@@ -295,6 +295,44 @@ description: 全场景聊天顾问。分析聊天截图，给读数、阶段判�
 
 ---
 
+## OCR 读图与自动化能力
+
+本skill包含OCR脚本，可自动提取聊天截图中的文字内容。
+
+### 通用OCR（适用于任何聊天截图）
+
+```bash
+cd scripts
+uv run --with rapidocr-onnxruntime python ocr_read.py "图片路径"
+```
+
+- `scripts/ocr_read.py`：通用离线OCR，只识别文字，不判断说话人
+- OCR输出后需人工确认说话人归属，再进入分析
+
+### 微信专用OCR（自动识别说话人）
+
+```bash
+cd scripts/scripts_wx
+uv run --with rapidocr-onnxruntime --with windows-capture python wx_read.py
+```
+
+- `scripts/scripts_wx/wx_read.py`：微信专用版，WGC抓帧 + 颜色判断说话人 + 气泡合并
+- `scripts/scripts_wx/wxcapture.py`：微信窗口抓帧
+- `scripts/scripts_wx/wxocr.py`：微信OCR封装
+
+**环境要求**：
+- Python 3.8+
+- Windows系统（依赖WGC抓帧API）
+- 依赖包：`rapidocr-onnxruntime`、`windows-capture`
+
+**工作流程**：
+1. 收到聊天截图
+2. 调用OCR脚本提取文字
+3. 确认说话人归属（通用OCR需人工确认，微信OCR自动判断）
+4. 进入信号分析流程
+
+---
+
 ## 第一步：建档（首次使用）
 
 新用户首次使用时，通过简短问卷建立基础档案：
