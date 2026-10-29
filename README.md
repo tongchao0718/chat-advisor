@@ -44,16 +44,34 @@ Chat Advisor 是一个 **AI Agent 技能（Skill）**，提供：
 
 ## 🚀 如何使用？
 
-### 作为 Hermes Agent 技能
+Chat Advisor 本质上是一套 **方法论 + 知识库**，可以搭配任何支持 System Prompt 或自定义指令的 AI 使用。
+
+### Hermes Agent（原生支持）
 
 1. 将整个 `chat-advisor` 目录复制到你的 Hermes skills 目录：
    ```
    ~/.hermes/skills/research/chat-advisor/
    ```
-
 2. 重启 Hermes Agent，技能会自动加载
-
 3. 在对话中分享聊天截图或描述场景，Agent 会使用此方法论进行分析
+
+### Claude / ChatGPT / Gemini / 其他对话式 AI
+
+1. 将 `SKILL.md` 的全部内容粘贴到 **System Prompt**（Claude Projects / ChatGPT GPTs / Gemini Gems）
+2. 知识库文件（`references/`）作为附件上传，或按需粘贴相关章节
+3. 开始对话即可使用
+
+### Cursor / Windsurf / Cline / Aider（AI 编程助手）
+
+1. 将 `SKILL.md` 复制到项目的 `.cursorrules`、`.windsurfrules` 或 `.clinerules` 文件中
+2. 知识库文件放在项目目录下，AI 助手可按需读取
+3. 在对话中引用聊天截图或文字，AI 助手会按照方法论分析
+
+### 其他 Agent 框架（WorkBuddy / AutoGPT / CrewAI 等）
+
+1. 将 `SKILL.md` 作为 Agent 的 **系统提示词** 或 **角色定义**
+2. 知识库文件作为 Agent 的知识库或 RAG 数据源
+3. 框架会按照方法论执行分析任务
 
 ### 首次使用
 
@@ -68,6 +86,20 @@ Agent 会引导你建立档案：
 - 判断关系温度阶段
 - 给出读数分析
 - 生成可复制的回复建议
+
+### OCR 截图识别（可选）
+
+项目包含 Python 脚本，可自动从聊天截图中提取文字：
+
+```bash
+# 通用 OCR（任何聊天截图）
+cd scripts
+uv run --with rapidocr-onnxruntime python ocr_read.py "图片路径"
+
+# 微信专用 OCR（自动识别说话人，需 Windows + WGC API）
+cd scripts/scripts_wx
+uv run --with rapidocr-onnxruntime --with windows-capture python wx_read.py
+```
 
 ## 📖 使用示例
 
@@ -91,24 +123,31 @@ chat-advisor/
 ├── SKILL.md              # 方法论（核心）
 ├── LICENSE               # MIT 许可证
 ├── README.md             # 本文件
-└── references/
-    ├── knowledge/        # 20个心理学/关系学文档
-    │   ├── 03-依恋理论与情绪调节.md
-    │   ├── 04-MBTI人格与匹配.md
-    │   └── ...
-    └── practical/        # 23个实战指南
-        ├── 实战话术编排器.md
-        ├── 场景感、松弛感与社交校准.md
-        └── ...
+├── .gitignore
+├── references/
+│   ├── knowledge/        # 20个心理学/关系学文档
+│   │   ├── 03-依恋理论与情绪调节.md
+│   │   ├── 04-MBTI人格与匹配.md
+│   │   └── ...
+│   └── practical/        # 23个实战指南
+│       ├── 实战话术编排器.md
+│       ├── 场景感、松弛感与社交校准.md
+│       └── ...
+└── scripts/              # OCR 自动化能力
+    ├── ocr_read.py       # 通用离线 OCR
+    └── scripts_wx/       # 微信专用
+        ├── wx_read.py    # WGC抓帧+颜色判断说话人
+        ├── wxcapture.py  # 微信窗口抓帧
+        └── wxocr.py      # 微信 OCR 封装
 ```
 
 ## 🤝 与 goutoujunshi-main 的关系
 
-本项目的**知识库**来自 [goutoujunshi-main](https://github.com/yourusername/goutoujunshi-main) 开源项目。
+本项目的**知识库**来自 goutoujunshi-main 开源项目。
 
 **区别**：
 - `goutoujunshi-main`：通用恋爱军师框架，轻量路由器
-- `chat-advisor`：**方法论增强版**，加入了信号验证、表达DNA、纪律系统等原创方法论
+- `chat-advisor`：**方法论增强版**，加入了信号验证、表达DNA、纪律系统等原创方法论，并扩展为全场景（恋爱/职场/友情/家庭）
 
 两者可以配合使用。
 
